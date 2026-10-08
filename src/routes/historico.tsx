@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Bar, BarChart, CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { PageHeader, Panel } from "@/components/AppShell";
 import { Calendar } from "@/components/ui/calendar";
+import { ptBR } from "date-fns/locale";
 import { dayHistory, plotYield, seasonCurve, seasons } from "@/lib/mock-data";
 
 export const Route = createFileRoute("/historico")({
@@ -36,7 +37,7 @@ function Historico() {
       <PageHeader title="Histórico e calendário" subtitle="Toque em um dia para ver os registros da lavoura" />
       <div className="grid gap-5 lg:grid-cols-[auto_1fr]">
         <Panel title="Calendário" icon={<CalendarDays className="h-5 w-5 text-primary" />}>
-          <Calendar mode="single" selected={date} onSelect={(d) => d && setDate(d)} defaultMonth={date}
+          <Calendar locale={ptBR} mode="single" selected={date} onSelect={(d) => d && setDate(d)} defaultMonth={date}
             fromDate={new Date(2026, 7, 10)} toDate={new Date(2026, 9, 8)} className="mx-auto" />
         </Panel>
         <Panel title={date.toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" })}>
@@ -59,7 +60,7 @@ function Historico() {
 
       <div className="mt-5 grid gap-5 xl:grid-cols-2">
         <Panel title="NDVI médio por safra" icon={<BarChart3 className="h-5 w-5 text-primary" />}>
-          <div className="h-72"><ResponsiveContainer>
+          <div className="h-72"><ResponsiveContainer width="100%" height="100%">
             <LineChart data={seasonCurve}>
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
               <XAxis dataKey="week" stroke="var(--muted-foreground)" fontSize={11} />
@@ -70,7 +71,7 @@ function Historico() {
           </ResponsiveContainer></div>
         </Panel>
         <Panel title="Produtividade por talhão (sc/ha)" icon={<BarChart3 className="h-5 w-5 text-earth" />}>
-          <div className="h-72"><ResponsiveContainer>
+          <div className="h-72"><ResponsiveContainer width="100%" height="100%">
             <BarChart data={plotYield}>
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
               <XAxis dataKey="plot" stroke="var(--muted-foreground)" fontSize={11} />

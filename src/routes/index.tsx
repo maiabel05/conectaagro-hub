@@ -58,7 +58,7 @@ function Dashboard() {
 
   return (
     <>
-      <PageHeader title="Bom dia, João 🌱" subtitle="Quinta, 8 de outubro · Safra 2025/26 · 123 ha monitorados"
+      <PageHeader title="Bom dia, João" subtitle="Quinta, 8 de outubro · Safra 2025/26 · 123 ha monitorados"
         right={<span className="flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary"><span className="live-dot h-2 w-2 rounded-full bg-primary" />Ao vivo</span>} />
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-5">
@@ -100,7 +100,7 @@ function Dashboard() {
 
         <Panel title="Sensores nas últimas 24h" icon={<Gauge className="h-5 w-5 text-primary" />} className="xl:col-span-2">
           <div className="h-64">
-            <ResponsiveContainer>
+            <ResponsiveContainer width="100%" height="100%">
               <LineChart data={hourly}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                 <XAxis dataKey="hour" stroke="var(--muted-foreground)" fontSize={11} interval={3} />
@@ -127,7 +127,7 @@ function Dashboard() {
           ); })}
         </div>
         <div className="mt-4 h-28">
-          <ResponsiveContainer>
+          <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={forecast}>
               <XAxis dataKey="day" stroke="var(--muted-foreground)" fontSize={11} />
               <Tooltip {...tip} />
