@@ -1,9 +1,10 @@
 import { Link } from "@tanstack/react-router";
-import { BookOpen, CalendarDays, LayoutDashboard, Leaf, Moon, Microscope, Sun } from "lucide-react";
+import { BookOpen, CalendarDays, LayoutDashboard, Leaf, MapPin, Moon, Microscope, Sun } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 
 const nav = [
   { to: "/", label: "Painel", icon: LayoutDashboard },
+  { to: "/talhoes", label: "Talhões", icon: MapPin },
   { to: "/diagnostico", label: "Diagnóstico", icon: Microscope },
   { to: "/caderno", label: "Caderno", icon: BookOpen },
   { to: "/historico", label: "Histórico", icon: CalendarDays },
@@ -56,7 +57,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <main className="flex-1 px-4 pb-28 pt-5 sm:px-6 lg:px-10 lg:pb-10 lg:pt-8">{children}</main>
 
-      <nav className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-4 border-t border-sidebar-border bg-sidebar text-sidebar-foreground lg:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-sidebar-border bg-sidebar text-sidebar-foreground lg:hidden">
         {nav.map(({ to, label, icon: Icon }) => (
           <Link key={to} to={to} activeOptions={{ exact: to === "/" }}
             className="flex flex-col items-center gap-1 py-3 text-xs opacity-70"

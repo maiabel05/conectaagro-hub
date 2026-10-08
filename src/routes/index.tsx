@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { Area, AreaChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { PageHeader, Panel } from "@/components/AppShell";
 import { waterBalance } from "@/lib/agro";
-import { alerts, forecast, hourly, plots, type Health } from "@/lib/mock-data";
+import { alerts, forecast, hourly, type Health } from "@/lib/mock-data";
+import { usePlots } from "@/lib/plots-store";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -44,7 +45,8 @@ function useLive() {
 function Dashboard() {
   const m = useLive();
   const [plotId, setPlotId] = useState("T1");
-  const plot = plots.find((p) => p.id === plotId)!;
+  const plots = usePlots();
+  const plot = plots.find((p) => p.id === plotId) ?? plots[0]!;
   const wb = waterBalance({ et0: forecast[0]!.et0, kc: plot.kc, rainForecast: forecast[0]!.rain, soilMoisture: plot.moisture });
   const fillPct = Math.min(100, (wb.litersPerM2 / 8) * 100);
 
