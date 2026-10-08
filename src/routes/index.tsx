@@ -9,9 +9,9 @@ import { alerts, forecast, hourly, plots, type Health } from "@/lib/mock-data";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Painel em tempo real — AgroSense" },
+      { title: "Painel em tempo real — ConectaAgro" },
       { name: "description", content: "Monitoramento IoT de talhões, balanço hídrico diário e previsão do tempo para agricultura de precisão." },
-      { property: "og:title", content: "Painel em tempo real — AgroSense" },
+      { property: "og:title", content: "Painel em tempo real — ConectaAgro" },
       { property: "og:description", content: "Sensores, irrigação recomendada e clima dos próximos 7 dias em um só lugar." },
     ],
   }),

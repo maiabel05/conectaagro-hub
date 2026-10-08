@@ -10,9 +10,9 @@ import { dayHistory, plotYield, seasonCurve, seasons } from "@/lib/mock-data";
 export const Route = createFileRoute("/historico")({
   head: () => ({
     meta: [
-      { title: "Histórico e calendário agrícola — AgroSense" },
+      { title: "Histórico e calendário agrícola — ConectaAgro" },
       { name: "description", content: "Consulte clima, irrigação, fotos e insumos de qualquer dia e compare safras e talhões." },
-      { property: "og:title", content: "Histórico e calendário agrícola — AgroSense" },
+      { property: "og:title", content: "Histórico e calendário agrícola — ConectaAgro" },
       { property: "og:description", content: "Dados retroativos do cultivo e comparação de desempenho entre safras." },
     ],
   }),

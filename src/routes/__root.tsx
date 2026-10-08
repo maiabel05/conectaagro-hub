@@ -80,7 +80,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "AgroSense — Inteligência agrícola" },
+      { title: "ConectaAgro — Inteligência agrícola" },
       { name: "description", content: "Dashboard de gestão e agricultura de precisão em tempo real." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

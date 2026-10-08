@@ -32,7 +32,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col bg-sidebar p-5 text-sidebar-foreground lg:flex">
         <div className="mb-10 flex items-center gap-2">
           <div className="grid h-10 w-10 place-items-center rounded-xl bg-sidebar-primary text-sidebar-primary-foreground"><Leaf className="h-5 w-5" /></div>
-          <div><p className="font-display text-lg font-semibold leading-none">AgroSense</p><p className="text-xs opacity-70">Fazenda Boa Vista</p></div>
+          <div><p className="font-display text-lg font-semibold leading-none">ConectaAgro</p><p className="text-xs opacity-70">Fazenda Boa Vista</p></div>
         </div>
         <nav className="flex flex-col gap-1">
           {nav.map(({ to, label, icon: Icon }) => (
@@ -50,7 +50,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       </aside>
 
       <header className="sticky top-0 z-30 flex items-center justify-between bg-sidebar px-4 py-3 text-sidebar-foreground lg:hidden">
-        <div className="flex items-center gap-2"><Leaf className="h-5 w-5 text-sidebar-primary" /><span className="font-display font-semibold">AgroSense</span></div>
+        <div className="flex items-center gap-2"><Leaf className="h-5 w-5 text-sidebar-primary" /><span className="font-display font-semibold">ConectaAgro</span></div>
         <ThemeToggle />
       </header>
 
