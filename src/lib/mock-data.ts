@@ -16,13 +16,13 @@ export const plots = [
 const days = ["Hoje", "Sex", "Sáb", "Dom", "Seg", "Ter", "Qua"];
 export const forecast = days.map((d, i) => ({
   day: d,
-  max: [31, 29, 27, 26, 28, 30, 32][i],
-  min: [19, 18, 17, 16, 17, 19, 20][i],
-  rain: [1, 6, 14, 3, 0, 0, 2][i],
-  rainProb: [15, 55, 85, 40, 5, 5, 20][i],
-  humidity: [62, 74, 88, 78, 58, 52, 60][i],
-  et0: [5.4, 4.6, 3.1, 3.8, 5.0, 5.6, 5.9][i],
-  icon: (["sun", "cloud-sun", "rain", "cloud", "sun", "sun", "cloud-sun"] as const)[i],
+  max: [31, 29, 27, 26, 28, 30, 32][i]!,
+  min: [19, 18, 17, 16, 17, 19, 20][i]!,
+  rain: [1, 6, 14, 3, 0, 0, 2][i]!,
+  rainProb: [15, 55, 85, 40, 5, 5, 20][i]!,
+  humidity: [62, 74, 88, 78, 58, 52, 60][i]!,
+  et0: [5.4, 4.6, 3.1, 3.8, 5.0, 5.6, 5.9][i]!,
+  icon: (["sun", "cloud-sun", "rain", "cloud", "sun", "sun", "cloud-sun"] as const)[i]!,
 }));
 
 export const hourly = Array.from({ length: 24 }, (_, h) => ({

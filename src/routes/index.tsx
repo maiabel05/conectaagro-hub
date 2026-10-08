@@ -45,7 +45,7 @@ function Dashboard() {
   const m = useLive();
   const [plotId, setPlotId] = useState("T1");
   const plot = plots.find((p) => p.id === plotId)!;
-  const wb = waterBalance({ et0: forecast[0].et0, kc: plot.kc, rainForecast: forecast[0].rain, soilMoisture: plot.moisture });
+  const wb = waterBalance({ et0: forecast[0]!.et0, kc: plot.kc, rainForecast: forecast[0]!.rain, soilMoisture: plot.moisture });
   const fillPct = Math.min(100, (wb.litersPerM2 / 8) * 100);
 
   const metrics = [
@@ -91,8 +91,8 @@ function Dashboard() {
             </div>
           </div>
           <div className="mt-6 grid grid-cols-3 gap-2 text-center text-xs">
-            <div className="rounded-xl bg-water-foreground/10 p-2"><p className="opacity-70">ET₀</p><p className="text-base font-semibold">{forecast[0].et0} mm</p></div>
-            <div className="rounded-xl bg-water-foreground/10 p-2"><p className="opacity-70">Kc ({plot.stage.split(" ")[0]})</p><p className="text-base font-semibold">{plot.kc}</p></div>
+            <div className="rounded-xl bg-water-foreground/10 p-2"><p className="opacity-70">ET₀</p><p className="text-base font-semibold">{forecast[0]!.et0} mm</p></div>
+            <div className="rounded-xl bg-water-foreground/10 p-2"><p className="opacity-70">Kc ({plot.stage.split(" ")[0] ?? ""})</p><p className="text-base font-semibold">{plot.kc}</p></div>
             <div className="rounded-xl bg-water-foreground/10 p-2"><p className="opacity-70">Chuva efetiva</p><p className="text-base font-semibold">{wb.effectiveRain} mm</p></div>
           </div>
           <p className="mt-3 text-xs opacity-75">ETc = ET₀ × Kc = {wb.etc} mm · Vazão do sistema: 5 mm/h</p>

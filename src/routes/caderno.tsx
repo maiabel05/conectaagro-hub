@@ -27,11 +27,11 @@ function Caderno() {
   const [diary, setDiary] = useState(seedDiary);
   const [gallery, setGallery] = useState(seedGallery);
   const [note, setNote] = useState("");
-  const [form, setForm] = useState({ date: "2026-10-08", product: "", type: "Fungicida", dose: "", plot: plots[0].name, graceDays: 14 });
+  const [form, setForm] = useState({ date: "2026-10-08", product: "", type: "Fungicida", dose: "", plot: plots[0]!.name, graceDays: 14 });
 
-  const addApp = (e: React.FormEvent) => {
+  const addApp = (e: React.FormEvent): void => {
     e.preventDefault();
-    if (!form.product || !form.dose) return toast.error("Preencha produto e dosagem");
+    if (!form.product || !form.dose) { toast.error("Preencha produto e dosagem"); return; }
     setApps([{ id: crypto.randomUUID(), ...form }, ...apps]);
     setForm({ ...form, product: "", dose: "" });
     toast.success("Aplicação registrada");
