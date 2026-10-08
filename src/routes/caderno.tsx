@@ -9,9 +9,9 @@ import { applications as seedApps, diary as seedDiary, gallery as seedGallery, p
 export const Route = createFileRoute("/caderno")({
   head: () => ({
     meta: [
-      { title: "Caderno de campo digital — AgroSense" },
+      { title: "Caderno de campo digital — ConectaAgro" },
       { name: "description", content: "Registre insumos e defensivos, carência para colheita segura, diário de bordo e fotos do plantio." },
-      { property: "og:title", content: "Caderno de campo digital — AgroSense" },
+      { property: "og:title", content: "Caderno de campo digital — ConectaAgro" },
       { property: "og:description", content: "Aplicações, carência regressiva, anotações e galeria da lavoura." },
     ],
   }),

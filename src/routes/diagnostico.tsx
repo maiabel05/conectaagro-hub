@@ -7,9 +7,9 @@ import { alerts, diagnoses, images } from "@/lib/mock-data";
 export const Route = createFileRoute("/diagnostico")({
   head: () => ({
     meta: [
-      { title: "Diagnóstico fitossanitário com IA — AgroSense" },
+      { title: "Diagnóstico fitossanitário com IA — ConectaAgro" },
       { name: "description", content: "Fotografe folhas e identifique pragas, doenças e deficiências com recomendações de manejo." },
-      { property: "og:title", content: "Diagnóstico fitossanitário com IA — AgroSense" },
+      { property: "og:title", content: "Diagnóstico fitossanitário com IA — ConectaAgro" },
       { property: "og:description", content: "Análise de imagens de plantas e alertas preditivos de risco." },
     ],
   }),
