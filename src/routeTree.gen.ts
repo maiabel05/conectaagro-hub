@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as CadernoRouteImport } from './routes/caderno'
 import { Route as DiagnosticoRouteImport } from './routes/diagnostico'
 import { Route as HistoricoRouteImport } from './routes/historico'
+import { Route as TalhoesRouteImport } from './routes/talhoes'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,18 +35,25 @@ const HistoricoRoute = HistoricoRouteImport.update({
   path: '/historico',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TalhoesRoute = TalhoesRouteImport.update({
+  id: '/talhoes',
+  path: '/talhoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/caderno': typeof CadernoRoute
   '/diagnostico': typeof DiagnosticoRoute
   '/historico': typeof HistoricoRoute
+  '/talhoes': typeof TalhoesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/caderno': typeof CadernoRoute
   '/diagnostico': typeof DiagnosticoRoute
   '/historico': typeof HistoricoRoute
+  '/talhoes': typeof TalhoesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +61,14 @@ export interface FileRoutesById {
   '/caderno': typeof CadernoRoute
   '/diagnostico': typeof DiagnosticoRoute
   '/historico': typeof HistoricoRoute
+  '/talhoes': typeof TalhoesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/caderno' | '/diagnostico' | '/historico'
+  fullPaths: '/' | '/caderno' | '/diagnostico' | '/historico' | '/talhoes'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/caderno' | '/diagnostico' | '/historico'
-  id: '__root__' | '/' | '/caderno' | '/diagnostico' | '/historico'
+  to: '/' | '/caderno' | '/diagnostico' | '/historico' | '/talhoes'
+  id: '__root__' | '/' | '/caderno' | '/diagnostico' | '/historico' | '/talhoes'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,6 +76,7 @@ export interface RootRouteChildren {
   CadernoRoute: typeof CadernoRoute
   DiagnosticoRoute: typeof DiagnosticoRoute
   HistoricoRoute: typeof HistoricoRoute
+  TalhoesRoute: typeof TalhoesRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -99,6 +109,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HistoricoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/talhoes': {
+      id: '/talhoes'
+      path: '/talhoes'
+      fullPath: '/talhoes'
+      preLoaderRoute: typeof TalhoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -107,6 +124,7 @@ const rootRouteChildren: RootRouteChildren = {
   CadernoRoute: CadernoRoute,
   DiagnosticoRoute: DiagnosticoRoute,
   HistoricoRoute: HistoricoRoute,
+  TalhoesRoute: TalhoesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
