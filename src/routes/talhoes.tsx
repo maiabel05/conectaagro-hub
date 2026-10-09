@@ -52,7 +52,7 @@ function Talhoes() {
     e.preventDefault();
     if (!draft.length || !name || !(area > 0)) return;
     const location = { lat: draft.reduce((s, p) => s + p.lat, 0) / draft.length, lng: draft.reduce((s, p) => s + p.lng, 0) / draft.length };
-    addPlot({ name: `${name} – ${crop}`, crop, stage, area: +area.toFixed(2), location, boundary: draft.length >= 3 ? draft : undefined });
+    addPlot({ name: `${name} – ${crop}`, crop, stage, area: +area.toFixed(2), location, ...(draft.length >= 3 ? { boundary: draft } : {}) });
     setDraft([]); setName(""); setManualArea(""); setGpsMsg("");
   };
 
