@@ -167,6 +167,8 @@
     font-size: 16px;
   }
   .app-content p, .app-content figcaption { overflow-wrap: anywhere; }
+  .app-content [data-slot="calendar"] { width: 100%; max-width: 100%; padding: 0; }
+  .app-content [data-slot="calendar"] td button { aspect-ratio: auto; min-width: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .live-dot::after { animation: none; }
