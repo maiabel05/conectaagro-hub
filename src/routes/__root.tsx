@@ -8,7 +8,10 @@ import {
   Scripts,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import type { User } from "@supabase/supabase-js";
+import { supabase } from "@/integrations/supabase/client";
+import { AuthContext } from "@/lib/use-auth";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -118,13 +121,41 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const router = useRouter();
+  const [auth, setAuth] = useState<{ user: User | null; ready: boolean }>({ user: null, ready: false });
+  useEffect(() => {
+    let active = true;
+    const { data } = supabase.auth.onAuthStateChange((event, session) => {
+      if (!active) return;
+      if (event === "SIGNED_OUT") {
+        void queryClient.cancelQueries();
+        queryClient.clear();
+        setAuth({ user: null, ready: true });
+      }
+      if (event !== "INITIAL_SESSION" && event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
+      // Verify the identity with Auth, outside its event callback lock.
+      queueMicrotask(async () => {
+        const { data: verified } = await supabase.auth.getUser();
+        if (!active) return;
+        setAuth({ user: verified.user, ready: true });
+        if (event !== "INITIAL_SESSION") {
+          void router.invalidate();
+          if (event !== "SIGNED_OUT") void queryClient.invalidateQueries();
+        }
+      });
+      if (!session && event === "INITIAL_SESSION") setAuth({ user: null, ready: true });
+    });
+    return () => { active = false; data.subscription.unsubscribe(); };
+  }, [queryClient, router]);
 
   return (
     <QueryClientProvider client={queryClient}>
+      <AuthContext.Provider value={auth}>
       <AppShell>
         <Outlet />
       </AppShell>
       <Toaster richColors position="top-center" />
+      </AuthContext.Provider>
     </QueryClientProvider>
   );
 }

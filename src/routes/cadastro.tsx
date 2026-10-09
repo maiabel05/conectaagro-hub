@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
 import { Panel } from "@/components/AppShell";
 import { field, googleSignIn } from "./auth";
 
@@ -27,8 +28,8 @@ function Cadastro() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (f.password.length < 8) return toast.error("A senha precisa ter pelo menos 8 caracteres.");
-    if (f.password !== f.confirm) return toast.error("As senhas não conferem.");
+    if (f.password.length < 8) { toast.error("A senha precisa ter pelo menos 8 caracteres."); return; }
+    if (f.password !== f.confirm) { toast.error("As senhas não conferem."); return; }
     setBusy(true);
     const { error } = await supabase.auth.signUp({
       email: f.email.trim(),
@@ -39,7 +40,7 @@ function Cadastro() {
       },
     });
     setBusy(false);
-    if (error) return toast.error(/pwned|leaked|weak/i.test(error.message) ? "Essa senha é fraca ou já vazou na internet. Escolha outra." : "Não foi possível criar a conta. Verifique os dados.");
+    if (error) { toast.error(/pwned|leaked|weak/i.test(error.message) ? "Essa senha é fraca ou já vazou na internet. Escolha outra." : "Não foi possível criar a conta. Verifique os dados."); return; }
     setSent(true);
   };
 
@@ -60,9 +61,9 @@ function Cadastro() {
           <label className="block text-sm">E-mail<input type="email" required autoComplete="email" className={field} value={f.email} onChange={set("email")} /></label>
           <label className="block text-sm">Senha (mín. 8 caracteres)<input type="password" required minLength={8} autoComplete="new-password" className={field} value={f.password} onChange={set("password")} /></label>
           <label className="block text-sm">Confirmar senha<input type="password" required autoComplete="new-password" className={field} value={f.confirm} onChange={set("confirm")} /></label>
-          <button disabled={busy} className="w-full rounded-lg bg-primary py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-50">Criar conta</button>
+          <Button type="submit" disabled={busy} className="w-full">Criar conta</Button>
         </form>
-        <button onClick={googleSignIn} className="mt-3 w-full rounded-lg border py-2.5 text-sm font-medium">Cadastrar com Google</button>
+        <Button variant="outline" onClick={googleSignIn} className="mt-3 w-full">Cadastrar com Google</Button>
         <p className="mt-4 text-center text-sm text-muted-foreground">Já tem conta? <Link to="/auth" className="font-medium text-primary">Entrar</Link></p>
       </Panel>
     </div>
