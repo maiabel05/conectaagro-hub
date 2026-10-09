@@ -41,7 +41,7 @@ export function AppShell({ children }: { children: ReactNode }) {
     const { error } = await supabase.auth.signOut();
     if (!error) await navigate({ to: "/auth", replace: true });
   };
-  const account = ready && (user ? <Button variant="ghost" onClick={signOut}>Sair</Button> : <Button variant="ghost" asChild><Link to="/auth">Entrar / Criar conta</Link></Button>);
+  const account = ready && (user ? <Button variant="ghost" onClick={signOut}>Sair</Button> : <Button variant="ghost" asChild><Link to="/auth"><span className="lg:hidden">Entrar</span><span className="hidden lg:inline">Entrar / Criar conta</span></Link></Button>);
   return (
     <div className="min-h-screen lg:flex">
       <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col bg-sidebar p-5 text-sidebar-foreground lg:flex">
@@ -65,14 +65,14 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </aside>
 
-      <header className="sticky top-0 z-30 flex items-center justify-between bg-sidebar px-4 py-3 text-sidebar-foreground lg:hidden">
-        <div className="flex items-center gap-2"><Leaf className="h-5 w-5 text-sidebar-primary" /><span className="font-display font-semibold">ConectaAgro</span></div>
-        <div className="flex items-center gap-1">{account}<ThemeToggle /></div>
+      <header className="mobile-header sticky top-0 z-30 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 bg-sidebar px-4 py-3 text-sidebar-foreground lg:hidden">
+        <div className="flex min-w-0 items-center gap-2"><Leaf className="h-5 w-5 shrink-0 text-sidebar-primary" /><span className="truncate font-display font-semibold">ConectaAgro</span></div>
+        <div className="flex shrink-0 items-center gap-1">{account}<ThemeToggle /></div>
       </header>
 
-      <main className="flex-1 px-4 pb-28 pt-5 sm:px-6 lg:px-10 lg:pb-10 lg:pt-8">{children}</main>
+      <main className="app-content min-w-0 flex-1 px-4 pb-28 pt-5 sm:px-6 lg:px-10 lg:pb-10 lg:pt-8">{children}</main>
 
-      <nav className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-sidebar-border bg-sidebar text-sidebar-foreground lg:hidden">
+      <nav aria-label="Menu principal" className="mobile-nav fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-sidebar-border bg-sidebar text-sidebar-foreground lg:hidden">
         {nav.map(({ to, label, icon: Icon }) => (
           <Link key={to} to={to} activeOptions={{ exact: to === "/" }}
             className="flex flex-col items-center gap-1 py-3 text-xs opacity-70"
@@ -87,22 +87,22 @@ export function AppShell({ children }: { children: ReactNode }) {
 
 export function PageHeader({ title, subtitle, right }: { title: string; subtitle?: string; right?: ReactNode }) {
   return (
-    <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
-      <div>
+    <div className="mb-6 grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 sm:flex sm:flex-wrap sm:items-end sm:justify-between">
+      <div className="min-w-0">
         <h1 className="text-2xl font-semibold sm:text-3xl">{title}</h1>
         {subtitle && <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>}
       </div>
-      {right}
+      {right && <div className="shrink-0">{right}</div>}
     </div>
   );
 }
 
 export function Panel({ title, icon, children, className = "", action }: { title?: string; icon?: ReactNode; children: ReactNode; className?: string; action?: ReactNode }) {
   return (
-    <section className={`rounded-2xl border bg-card p-5 text-card-foreground shadow-soft ${className}`}>
+    <section className={`min-w-0 rounded-2xl border bg-card p-4 text-card-foreground shadow-soft sm:p-5 ${className}`}>
       {title && (
-        <div className="mb-4 flex items-center justify-between gap-2">
-          <h2 className="flex items-center gap-2 text-base font-semibold">{icon}{title}</h2>{action}
+        <div className="mb-4 grid min-w-0 gap-3 sm:flex sm:items-center sm:justify-between">
+          <h2 className="flex min-w-0 items-center gap-2 text-base font-semibold [&>svg]:shrink-0">{icon}{title}</h2>{action && <div className="shrink-0">{action}</div>}
         </div>
       )}
       {children}
