@@ -8,3 +8,7 @@
 - [x] Adapt layout, forms, navigation and touch targets for phones.
 - [x] Add explicit save, send and continue actions using existing flows.
 - [x] Verify public screens at 320/390/768/1280px; send diagnosis, continue, save application and note pass.
+
+# Basic settings
+- [x] Add settings to navigation, Portuguese/theme/style preferences, and read-only checks with accurate persistence limitations.
+- [x] Verify preference save/reload, validation and signed-out checks; tests pass.

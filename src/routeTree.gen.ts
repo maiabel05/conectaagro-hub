@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CadastroRouteImport } from './routes/cadastro'
 import { Route as CadernoRouteImport } from './routes/caderno'
+import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
 import { Route as DiagnosticoRouteImport } from './routes/diagnostico'
 import { Route as HistoricoRouteImport } from './routes/historico'
 import { Route as AuthenticatedTalhoesRouteImport } from './routes/_authenticated/talhoes'
@@ -42,6 +43,11 @@ const CadernoRoute = CadernoRouteImport.update({
   path: '/caderno',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ConfiguracoesRoute = ConfiguracoesRouteImport.update({
+  id: '/configuracoes',
+  path: '/configuracoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DiagnosticoRoute = DiagnosticoRouteImport.update({
   id: '/diagnostico',
   path: '/diagnostico',
@@ -63,6 +69,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/cadastro': typeof CadastroRoute
   '/caderno': typeof CadernoRoute
+  '/configuracoes': typeof ConfiguracoesRoute
   '/diagnostico': typeof DiagnosticoRoute
   '/historico': typeof HistoricoRoute
   '/talhoes': typeof AuthenticatedTalhoesRoute
@@ -72,6 +79,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/cadastro': typeof CadastroRoute
   '/caderno': typeof CadernoRoute
+  '/configuracoes': typeof ConfiguracoesRoute
   '/diagnostico': typeof DiagnosticoRoute
   '/historico': typeof HistoricoRoute
   '/talhoes': typeof AuthenticatedTalhoesRoute
@@ -83,6 +91,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/cadastro': typeof CadastroRoute
   '/caderno': typeof CadernoRoute
+  '/configuracoes': typeof ConfiguracoesRoute
   '/diagnostico': typeof DiagnosticoRoute
   '/historico': typeof HistoricoRoute
   '/_authenticated/talhoes': typeof AuthenticatedTalhoesRoute
@@ -94,6 +103,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/cadastro'
     | '/caderno'
+    | '/configuracoes'
     | '/diagnostico'
     | '/historico'
     | '/talhoes'
@@ -103,6 +113,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/cadastro'
     | '/caderno'
+    | '/configuracoes'
     | '/diagnostico'
     | '/historico'
     | '/talhoes'
@@ -113,6 +124,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/cadastro'
     | '/caderno'
+    | '/configuracoes'
     | '/diagnostico'
     | '/historico'
     | '/_authenticated/talhoes'
@@ -124,6 +136,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   CadastroRoute: typeof CadastroRoute
   CadernoRoute: typeof CadernoRoute
+  ConfiguracoesRoute: typeof ConfiguracoesRoute
   DiagnosticoRoute: typeof DiagnosticoRoute
   HistoricoRoute: typeof HistoricoRoute
 }
@@ -163,6 +176,13 @@ declare module '@tanstack/react-router' {
       path: '/caderno'
       fullPath: '/caderno'
       preLoaderRoute: typeof CadernoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/configuracoes': {
+      id: '/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/configuracoes'
+      preLoaderRoute: typeof ConfiguracoesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/diagnostico': {
@@ -206,6 +226,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   CadastroRoute: CadastroRoute,
   CadernoRoute: CadernoRoute,
+  ConfiguracoesRoute: ConfiguracoesRoute,
   DiagnosticoRoute: DiagnosticoRoute,
   HistoricoRoute: HistoricoRoute,
 }
