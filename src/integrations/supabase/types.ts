@@ -94,27 +94,45 @@ export type Database = {
       }
       profiles: {
         Row: {
+          address: string
           city: string
           created_at: string
           farm_name: string
           full_name: string
           id: string
+          main_crops: string
+          phone: string
+          postal_code: string
+          producer_type: string
+          state: string
           updated_at: string
         }
         Insert: {
+          address?: string
           city?: string
           created_at?: string
           farm_name?: string
           full_name?: string
           id: string
+          main_crops?: string
+          phone?: string
+          postal_code?: string
+          producer_type?: string
+          state?: string
           updated_at?: string
         }
         Update: {
+          address?: string
           city?: string
           created_at?: string
           farm_name?: string
           full_name?: string
           id?: string
+          main_crops?: string
+          phone?: string
+          postal_code?: string
+          producer_type?: string
+          state?: string
           updated_at?: string
         }
         Relationships: []
