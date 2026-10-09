@@ -14,13 +14,118 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      plot_shares: {
+        Row: {
+          created_at: string
+          id: string
+          owner_id: string
+          viewer_email: string
+          viewer_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          owner_id: string
+          viewer_email: string
+          viewer_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          owner_id?: string
+          viewer_email?: string
+          viewer_id?: string
+        }
+        Relationships: []
+      }
+      plots: {
+        Row: {
+          area: number
+          boundary: Json | null
+          code: string
+          created_at: string
+          crop: string
+          health: string
+          id: string
+          kc: number
+          lat: number | null
+          lng: number | null
+          moisture: number
+          name: string
+          ndvi: number
+          owner_id: string
+          stage: string
+        }
+        Insert: {
+          area: number
+          boundary?: Json | null
+          code: string
+          created_at?: string
+          crop: string
+          health?: string
+          id?: string
+          kc?: number
+          lat?: number | null
+          lng?: number | null
+          moisture?: number
+          name: string
+          ndvi?: number
+          owner_id?: string
+          stage?: string
+        }
+        Update: {
+          area?: number
+          boundary?: Json | null
+          code?: string
+          created_at?: string
+          crop?: string
+          health?: string
+          id?: string
+          kc?: number
+          lat?: number | null
+          lng?: number | null
+          moisture?: number
+          name?: string
+          ndvi?: number
+          owner_id?: string
+          stage?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          city: string
+          created_at: string
+          farm_name: string
+          full_name: string
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          city?: string
+          created_at?: string
+          farm_name?: string
+          full_name?: string
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          city?: string
+          created_at?: string
+          farm_name?: string
+          full_name?: string
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      can_view_owner: { Args: { _owner: string }; Returns: boolean }
+      share_plots_with: { Args: { _email: string }; Returns: boolean }
     }
     Enums: {
       [_ in never]: never

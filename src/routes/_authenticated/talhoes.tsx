@@ -5,7 +5,7 @@ import { PageHeader, Panel } from "@/components/AppShell";
 import { PlotMap, areaHa } from "@/components/PlotMap";
 import { addPlot, removePlot, usePlots, type LatLng } from "@/lib/plots-store";
 
-export const Route = createFileRoute("/talhoes")({
+export const Route = createFileRoute("/_authenticated/talhoes")({
   head: () => ({
     meta: [
       { title: "Meus talhões no mapa — ConectaAgro" },

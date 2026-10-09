@@ -1,5 +1,13 @@
 {
   "version": "7",
   "dialect": "postgresql",
-  "entries": []
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1791510224792,
+      "tag": "0000_plots_profiles_sharing",
+      "breakpoints": true
+    }
+  ]
 }
