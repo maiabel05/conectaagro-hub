@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { CheckCircle2, Loader2, Save, Settings, ShieldCheck } from "lucide-react";
+import { CheckCircle2, Loader2, Save, Settings, ShieldCheck, UserRound, LogIn } from "lucide-react";
 import { toast } from "sonner";
 import { PageHeader, Panel } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
@@ -78,6 +78,12 @@ function Configuracoes() {
 
   return <>
     <PageHeader title="Configurações" subtitle="Preferências e segurança da sua conta" />
+    <section className="mb-6 flex min-w-0 flex-col gap-4 border-b pb-6 sm:flex-row sm:items-center sm:justify-between">
+      <div className="min-w-0"><h2 className="flex items-center gap-2 text-lg font-semibold"><UserRound className="h-5 w-5 text-primary" />Conta do produtor</h2><p className="mt-1 text-sm text-muted-foreground">{user ? "Atualize seu cadastro, e-mail e senha." : "Entre na sua conta ou crie seu cadastro de produtor."}</p></div>
+      <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
+        {ready && (user ? <Button asChild><Link to="/conta"><UserRound className="h-4 w-4" />Modificar minha conta</Link></Button> : <><Button asChild><Link to="/auth" search={{ next: "conta" }}><LogIn className="h-4 w-4" />Entrar na conta</Link></Button><Button variant="outline" asChild><Link to="/cadastro">Criar conta de produtor</Link></Button></>)}
+      </div>
+    </section>
     <div className="grid min-w-0 gap-6 xl:grid-cols-2">
       <Panel title="Suas preferências" icon={<Settings className="h-5 w-5 text-primary" />}>
         <form onSubmit={save} className="space-y-5">

@@ -17,6 +17,7 @@ import { Route as CadernoRouteImport } from './routes/caderno'
 import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
 import { Route as DiagnosticoRouteImport } from './routes/diagnostico'
 import { Route as HistoricoRouteImport } from './routes/historico'
+import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/conta'
 import { Route as AuthenticatedTalhoesRouteImport } from './routes/_authenticated/talhoes'
 
 const IndexRoute = IndexRouteImport.update({
@@ -58,6 +59,11 @@ const HistoricoRoute = HistoricoRouteImport.update({
   path: '/historico',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedContaRoute = AuthenticatedContaRouteImport.update({
+  id: '/conta',
+  path: '/conta',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedTalhoesRoute = AuthenticatedTalhoesRouteImport.update({
   id: '/talhoes',
   path: '/talhoes',
@@ -72,6 +78,7 @@ export interface FileRoutesByFullPath {
   '/configuracoes': typeof ConfiguracoesRoute
   '/diagnostico': typeof DiagnosticoRoute
   '/historico': typeof HistoricoRoute
+  '/conta': typeof AuthenticatedContaRoute
   '/talhoes': typeof AuthenticatedTalhoesRoute
 }
 export interface FileRoutesByTo {
@@ -82,6 +89,7 @@ export interface FileRoutesByTo {
   '/configuracoes': typeof ConfiguracoesRoute
   '/diagnostico': typeof DiagnosticoRoute
   '/historico': typeof HistoricoRoute
+  '/conta': typeof AuthenticatedContaRoute
   '/talhoes': typeof AuthenticatedTalhoesRoute
 }
 export interface FileRoutesById {
@@ -94,6 +102,7 @@ export interface FileRoutesById {
   '/configuracoes': typeof ConfiguracoesRoute
   '/diagnostico': typeof DiagnosticoRoute
   '/historico': typeof HistoricoRoute
+  '/_authenticated/conta': typeof AuthenticatedContaRoute
   '/_authenticated/talhoes': typeof AuthenticatedTalhoesRoute
 }
 export interface FileRouteTypes {
@@ -106,6 +115,7 @@ export interface FileRouteTypes {
     | '/configuracoes'
     | '/diagnostico'
     | '/historico'
+    | '/conta'
     | '/talhoes'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -116,6 +126,7 @@ export interface FileRouteTypes {
     | '/configuracoes'
     | '/diagnostico'
     | '/historico'
+    | '/conta'
     | '/talhoes'
   id:
     | '__root__'
@@ -127,6 +138,7 @@ export interface FileRouteTypes {
     | '/configuracoes'
     | '/diagnostico'
     | '/historico'
+    | '/_authenticated/conta'
     | '/_authenticated/talhoes'
   fileRoutesById: FileRoutesById
 }
@@ -199,6 +211,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HistoricoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/conta': {
+      id: '/_authenticated/conta'
+      path: '/conta'
+      fullPath: '/conta'
+      preLoaderRoute: typeof AuthenticatedContaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/talhoes': {
       id: '/_authenticated/talhoes'
       path: '/talhoes'
@@ -210,10 +229,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedContaRoute: typeof AuthenticatedContaRoute
   AuthenticatedTalhoesRoute: typeof AuthenticatedTalhoesRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedContaRoute: AuthenticatedContaRoute,
   AuthenticatedTalhoesRoute: AuthenticatedTalhoesRoute,
 }
 

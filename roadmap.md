@@ -12,3 +12,12 @@
 # Basic settings
 - [x] Add settings to navigation, Portuguese/theme/style preferences, and read-only checks with accurate persistence limitations.
 - [x] Verify preference save/reload, validation and signed-out checks; tests pass.
+
+# Expanded producer account
+- [ ] Add account entry to Settings and expand signup with optional contact, address and farming details.
+- [ ] Add private account editing, email change and current-password-confirmed password change.
+- [ ] Verify validation, account navigation and authenticated save/reload when an account is available.
+
+# Plot guidance and notifications
+- [ ] Add in-app guidance and notifications selectable by plot, clearly marked as simulated when using demonstration data.
+- [ ] Verify plot switching and guidance display.

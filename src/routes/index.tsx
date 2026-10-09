@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { Area, AreaChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { PageHeader, Panel } from "@/components/AppShell";
 import { waterBalance } from "@/lib/agro";
-import { alerts, forecast, hourly, type Health } from "@/lib/mock-data";
+import { forecast, hourly, type Health } from "@/lib/mock-data";
+import { PlotNotifications } from "@/components/PlotNotifications";
 import { usePlots } from "@/lib/plots-store";
 import { Button } from "@/components/ui/button";
 
@@ -180,15 +181,8 @@ function Dashboard() {
             ))}
           </div>
         </Panel>
-        <Panel title="Alertas preditivos" icon={<AlertTriangle className="h-5 w-5 text-warning" />}>
-          <ul className="space-y-3">
-            {alerts.slice(0, 3).map((a) => (
-              <li key={a.title} className={`rounded-xl border-l-4 bg-muted p-3 ${a.level === "alto" ? "border-destructive" : a.level === "médio" ? "border-warning" : "border-primary"}`}>
-                <p className="text-sm font-semibold">{a.title}</p>
-                <p className="text-xs text-muted-foreground">{a.plot} · {a.action}</p>
-              </li>
-            ))}
-          </ul>
+        <Panel title="Orientações e notificações" icon={<AlertTriangle className="h-5 w-5 text-warning" />}>
+          <PlotNotifications plots={plots} />
         </Panel>
       </div>
     </>
