@@ -11,4 +11,4 @@
 
 # Basic settings
 - [x] Add settings to navigation, Portuguese/theme/style preferences, and read-only checks with accurate persistence limitations.
-- [ ] Verify preference save/reload, validation and signed-out checks.
+- [x] Verify preference save/reload, validation and signed-out checks; tests pass.
