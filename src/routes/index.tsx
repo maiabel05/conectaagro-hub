@@ -14,6 +14,8 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Monitoramento IoT de talhões, balanço hídrico diário e previsão do tempo para agricultura de precisão." },
       { property: "og:title", content: "Painel em tempo real — ConectaAgro" },
       { property: "og:description", content: "Sensores, irrigação recomendada e clima dos próximos 7 dias em um só lugar." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: Dashboard,
@@ -74,22 +76,22 @@ function Dashboard() {
       </div>
 
       <div className="mt-5 grid gap-5 xl:grid-cols-3">
-        <section className="relative overflow-hidden rounded-2xl bg-water-gradient p-6 text-water-foreground shadow-soft xl:col-span-1">
-          <div className="flex items-center justify-between">
-            <h2 className="flex items-center gap-2 font-semibold"><Droplets className="h-5 w-5" />Balanço hídrico do dia</h2>
+        <section className="relative min-w-0 overflow-hidden rounded-2xl bg-water-gradient p-4 sm:p-6 text-water-foreground shadow-soft xl:col-span-1">
+          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
+            <h2 className="flex min-w-0 items-center gap-2 font-semibold [&>svg]:shrink-0"><Droplets className="h-5 w-5" />Balanço hídrico do dia</h2>
             <select value={plotId} onChange={(e) => setPlotId(e.target.value)}
               className="rounded-lg border border-water-foreground/30 bg-water-foreground/10 px-2 py-1 text-sm text-water-foreground">
               {plots.map((p) => <option key={p.id} value={p.id} className="text-foreground">{p.id}</option>)}
             </select>
           </div>
-          <div className="mt-6 flex items-end gap-6">
-            <div className="relative h-36 w-20 overflow-hidden rounded-2xl border-2 border-water-foreground/50 bg-water-foreground/10">
+          <div className="mt-6 grid grid-cols-[auto_minmax(0,1fr)] items-end gap-3 sm:gap-6">
+            <div className="relative h-32 w-12 sm:h-36 sm:w-20 overflow-hidden rounded-2xl border-2 border-water-foreground/50 bg-water-foreground/10">
               <div className="absolute inset-x-0 bottom-0 bg-water-foreground/60 transition-all duration-700" style={{ height: `${fillPct}%` }} />
             </div>
             <div>
               <p className="text-sm opacity-80">Aplicar hoje</p>
-              <p className="font-display text-5xl font-bold">{wb.litersPerM2.toLocaleString("pt-BR")}<span className="ml-1 text-xl">L/m²</span></p>
-              <p className="mt-2 flex items-center gap-1.5 text-lg"><Timer className="h-5 w-5" />{Math.floor(wb.minutes / 60)}h {wb.minutes % 60}min de irrigação</p>
+              <p className="font-display text-4xl font-bold sm:text-5xl">{wb.litersPerM2.toLocaleString("pt-BR")}<span className="ml-1 text-xl">L/m²</span></p>
+              <p className="mt-2 flex items-center gap-1.5 text-sm sm:text-lg [&>svg]:shrink-0"><Timer className="h-5 w-5" />{Math.floor(wb.minutes / 60)}h {wb.minutes % 60}min de irrigação</p>
             </div>
           </div>
           <div className="mt-6 grid grid-cols-3 gap-2 text-center text-xs">
@@ -118,7 +120,7 @@ function Dashboard() {
       </div>
 
       <Panel title="Previsão para 7 dias" icon={<CloudSun className="h-5 w-5 text-water" />} className="mt-5">
-        <div className="grid grid-cols-4 gap-2 sm:grid-cols-7">
+        <div className="grid grid-cols-2 gap-2 min-[400px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-7">
           {forecast.map((f) => { const I = wIcon[f.icon]; return (
             <div key={f.day} className="rounded-xl bg-muted p-3 text-center">
               <p className="text-xs font-medium text-muted-foreground">{f.day}</p>
@@ -146,8 +148,8 @@ function Dashboard() {
             {plots.map((p) => (
               <button key={p.id} onClick={() => setPlotId(p.id)}
                 className={`rounded-xl border p-4 text-left transition hover:border-primary ${plotId === p.id ? "border-primary ring-2 ring-primary/20" : ""}`}>
-                <div className="flex items-start justify-between gap-2">
-                  <div><p className="font-semibold">{p.name}</p><p className="text-xs text-muted-foreground">{p.area} ha · {p.stage}</p></div>
+                <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-2">
+                  <div className="min-w-0"><p className="font-semibold">{p.name}</p><p className="text-xs text-muted-foreground">{p.area} ha · {p.stage}</p></div>
                   <span className={`rounded-full px-2.5 py-1 text-xs font-medium capitalize ${healthStyle[p.health]}`}>{p.health}</span>
                 </div>
                 <div className="mt-4 grid grid-cols-2 gap-3 text-sm">

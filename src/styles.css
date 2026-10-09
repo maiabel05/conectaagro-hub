@@ -154,3 +154,22 @@
   }
 }
 @keyframes ping-soft { 0% { transform: scale(1); opacity: .7 } 100% { transform: scale(2.4); opacity: 0 } }
+
+.mobile-header { padding-top: max(0.75rem, env(safe-area-inset-top)); }
+.mobile-nav { padding-bottom: env(safe-area-inset-bottom); }
+@media (max-width: 1023px) {
+  .app-content { padding-bottom: calc(7rem + env(safe-area-inset-bottom)); }
+  .app-content button, .app-content [role="button"], .mobile-header button { min-height: 44px; }
+  .app-content input:not([type="file"]), .app-content select, .app-content textarea {
+    min-width: 0;
+    max-width: 100%;
+    min-height: 44px;
+    font-size: 16px;
+  }
+  .app-content p, .app-content figcaption { overflow-wrap: anywhere; }
+  .app-content [data-slot="calendar"] { width: 100%; max-width: 100%; padding: 0; }
+  .app-content [data-slot="calendar"] td button { aspect-ratio: auto; min-width: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .live-dot::after { animation: none; }
+}

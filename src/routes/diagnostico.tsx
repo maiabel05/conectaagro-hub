@@ -1,6 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { AlertTriangle, Camera, CheckCircle2, Loader2, ScanSearch, Upload } from "lucide-react";
-import { useRef, useState } from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { AlertTriangle, ArrowRight, Camera, CheckCircle2, Loader2, ScanSearch, Send, Upload } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
 import { PageHeader, Panel } from "@/components/AppShell";
 import { alerts, diagnoses, images } from "@/lib/mock-data";
 
@@ -11,6 +12,8 @@ export const Route = createFileRoute("/diagnostico")({
       { name: "description", content: "Fotografe folhas e identifique pragas, doenças e deficiências com recomendações de manejo." },
       { property: "og:title", content: "Diagnóstico fitossanitário com IA — ConectaAgro" },
       { property: "og:description", content: "Análise de imagens de plantas e alertas preditivos de risco." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: Diagnostico,
@@ -22,11 +25,14 @@ function Diagnostico() {
   const fileRef = useRef<HTMLInputElement>(null);
   const camRef = useRef<HTMLInputElement>(null);
 
-  const analyze = (src: string) => {
-    setImg(src); setState("loading");
-    setTimeout(() => setState("done"), 2200);
-  };
-  const onFile = (f?: File) => f && analyze(URL.createObjectURL(f));
+  useEffect(() => {
+    if (state !== "loading") return;
+    const timer = setTimeout(() => setState("done"), 2200);
+    return () => clearTimeout(timer);
+  }, [state]);
+  useEffect(() => () => { if (img?.startsWith("blob:")) URL.revokeObjectURL(img); }, [img]);
+  const selectImage = (src: string) => { setImg(src); setState("idle"); };
+  const onFile = (f?: File) => f && selectImage(URL.createObjectURL(f));
 
   return (
     <>
@@ -49,10 +55,15 @@ function Diagnostico() {
             )}
           </div>
           <div className="mt-4 grid grid-cols-3 gap-2">
-            <button onClick={() => camRef.current?.click()} className="flex items-center justify-center gap-2 rounded-xl bg-primary py-3 text-sm font-medium text-primary-foreground"><Camera className="h-4 w-4" />Câmera</button>
-            <button onClick={() => fileRef.current?.click()} className="flex items-center justify-center gap-2 rounded-xl bg-secondary py-3 text-sm font-medium text-secondary-foreground"><Upload className="h-4 w-4" />Galeria</button>
-            <button onClick={() => analyze(images.leaf)} className="rounded-xl border py-3 text-sm font-medium">Exemplo</button>
+            <Button variant="secondary" disabled={state === "loading"} onClick={() => camRef.current?.click()}><Camera className="h-4 w-4" />Câmera</Button>
+            <Button variant="secondary" disabled={state === "loading"} onClick={() => fileRef.current?.click()}><Upload className="h-4 w-4" />Galeria</Button>
+            <Button variant="outline" disabled={state === "loading"} onClick={() => selectImage(images.leaf)}>Exemplo</Button>
           </div>
+          <Button className="mt-3 w-full" disabled={!img || state === "loading"} onClick={() => setState("loading")}>
+            {state === "loading" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+            {state === "loading" ? "Analisando…" : "Enviar para análise"}
+          </Button>
+          <p className="mt-2 text-xs text-muted-foreground">Análise simulada para demonstração.</p>
           <input ref={fileRef} type="file" accept="image/*" hidden onChange={(e) => onFile(e.target.files?.[0])} />
           <input ref={camRef} type="file" accept="image/*" capture="environment" hidden onChange={(e) => onFile(e.target.files?.[0])} />
         </Panel>
@@ -77,6 +88,7 @@ function Diagnostico() {
                 </div>
               ))}
               <p className="text-xs text-muted-foreground">Análise simulada para demonstração. Confirme com um agrônomo antes de aplicar defensivos.</p>
+              <Button asChild className="w-full"><Link to="/caderno">Continuar no caderno<ArrowRight className="h-4 w-4" /></Link></Button>
             </div>
           )}
         </Panel>

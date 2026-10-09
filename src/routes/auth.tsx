@@ -48,7 +48,7 @@ function AuthPage() {
         <form onSubmit={submit} className="space-y-3">
           <label className="block text-sm">E-mail<input type="email" autoComplete="email" required className={field} value={email} onChange={(e) => setEmail(e.target.value)} /></label>
           <label className="block text-sm">Senha<input type="password" autoComplete="current-password" required className={field} value={password} onChange={(e) => setPassword(e.target.value)} /></label>
-          <Button type="submit" disabled={busy} className="w-full">Entrar</Button>
+          <Button type="submit" disabled={busy} className="w-full">{busy ? "Entrando…" : "Continuar"}</Button>
         </form>
         <Button variant="outline" onClick={googleSignIn} className="mt-3 w-full">Entrar com Google</Button>
         <p className="mt-4 text-center text-sm text-muted-foreground">Ainda não tem conta? <Link to="/cadastro" className="font-medium text-primary">Criar conta de produtor</Link></p>

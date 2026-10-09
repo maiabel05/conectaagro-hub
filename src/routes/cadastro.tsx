@@ -61,7 +61,7 @@ function Cadastro() {
           <label className="block text-sm">E-mail<input type="email" required autoComplete="email" className={field} value={f.email} onChange={set("email")} /></label>
           <label className="block text-sm">Senha (mín. 8 caracteres)<input type="password" required minLength={8} autoComplete="new-password" className={field} value={f.password} onChange={set("password")} /></label>
           <label className="block text-sm">Confirmar senha<input type="password" required autoComplete="new-password" className={field} value={f.confirm} onChange={set("confirm")} /></label>
-          <Button type="submit" disabled={busy} className="w-full">Criar conta</Button>
+          <Button type="submit" disabled={busy} className="w-full">{busy ? "Criando conta…" : "Criar conta"}</Button>
         </form>
         <Button variant="outline" onClick={googleSignIn} className="mt-3 w-full">Cadastrar com Google</Button>
         <p className="mt-4 text-center text-sm text-muted-foreground">Já tem conta? <Link to="/auth" className="font-medium text-primary">Entrar</Link></p>

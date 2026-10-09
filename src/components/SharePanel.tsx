@@ -39,9 +39,9 @@ export function SharePanel({ userId }: { userId: string }) {
   return (
     <Panel title="Compartilhar meus talhões" icon={<Share2 className="h-5 w-5 text-primary" />} className="mt-5">
       <p className="mb-3 text-sm text-muted-foreground">A autorização inclui todos os seus talhões, localização e área, inclusive os futuros. Não inclui seu cadastro pessoal. A pessoa precisa ter conta confirmada e poderá somente visualizar. Você pode revogar o acesso.</p>
-      <form onSubmit={share} className="flex flex-wrap gap-2">
+      <form onSubmit={share} className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto]">
         <input aria-label="E-mail da pessoa autorizada" type="email" required maxLength={255} value={email} onChange={(e) => setEmail(e.target.value)} placeholder="e-mail da pessoa" className="min-w-0 flex-1 rounded-lg border bg-background px-3 py-2 text-sm" />
-        <Button type="submit" disabled={busy}>Liberar</Button>
+        <Button type="submit" disabled={busy}>{busy ? "Enviando…" : "Enviar autorização"}</Button>
       </form>
       <ul className="mt-3 divide-y text-sm">
         {(shares.data ?? []).map((s) => (

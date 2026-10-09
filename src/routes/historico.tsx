@@ -14,6 +14,8 @@ export const Route = createFileRoute("/historico")({
       { name: "description", content: "Consulte clima, irrigação, fotos e insumos de qualquer dia e compare safras e talhões." },
       { property: "og:title", content: "Histórico e calendário agrícola — ConectaAgro" },
       { property: "og:description", content: "Dados retroativos do cultivo e comparação de desempenho entre safras." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: Historico,
