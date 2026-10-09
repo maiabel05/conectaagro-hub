@@ -7,4 +7,4 @@
 # Mobile presentation
 - [x] Adapt layout, forms, navigation and touch targets for phones.
 - [x] Add explicit save, send and continue actions using existing flows.
-- [ ] Verify phone layouts and diagnosis / field-note actions in preview.
+- [x] Verify public screens at 320/390/768/1280px; send diagnosis, continue, save application and note pass.
