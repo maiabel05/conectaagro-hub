@@ -19,4 +19,7 @@ describe("private producer account validation", () => {
   it("rejects mismatching signup passwords", () => {
     expect(signupSchema.safeParse({ ...profile, email: "producer@example.com", password: "securepassword", confirm: "differentpassword" }).success).toBe(false);
   });
+  it("loads incomplete profiles created through social sign-in", () => {
+    expect(profileSchema.safeParse(emptyProfile).success).toBe(true);
+  });
 });
