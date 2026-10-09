@@ -3,7 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/use-auth";
 import { Button } from "@/components/ui/button";
-import { BookOpen, CalendarDays, LayoutDashboard, Leaf, MapPin, Moon, Microscope, Sun } from "lucide-react";
+import { BookOpen, CalendarDays, LayoutDashboard, Leaf, MapPin, Moon, Microscope, Settings, Sun } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 
 const nav = [
@@ -12,16 +12,23 @@ const nav = [
   { to: "/diagnostico", label: "Diagnóstico", icon: Microscope },
   { to: "/caderno", label: "Caderno", icon: BookOpen },
   { to: "/historico", label: "Histórico", icon: CalendarDays },
+  { to: "/configuracoes", label: "Configurações", icon: Settings },
 ] as const;
 
 function ThemeToggle() {
   const [dark, setDark] = useState(false);
-  useEffect(() => { setDark(document.documentElement.classList.contains("dark")); }, []);
+  useEffect(() => {
+    const sync = () => setDark(document.documentElement.classList.contains("dark"));
+    sync();
+    window.addEventListener("conectaagro:theme", sync);
+    return () => window.removeEventListener("conectaagro:theme", sync);
+  }, []);
   const toggle = () => {
     const next = !dark;
     setDark(next);
     document.documentElement.classList.toggle("dark", next);
     localStorage.setItem("theme", next ? "dark" : "light");
+    window.dispatchEvent(new Event("conectaagro:theme"));
   };
   return (
     <button onClick={toggle} aria-label="Alternar tema"
@@ -72,12 +79,13 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <main className="app-content min-w-0 flex-1 px-4 pb-28 pt-5 sm:px-6 lg:px-10 lg:pb-10 lg:pt-8">{children}</main>
 
-      <nav aria-label="Menu principal" className="mobile-nav fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-sidebar-border bg-sidebar text-sidebar-foreground lg:hidden">
+      <nav aria-label="Menu principal" className="mobile-nav fixed inset-x-0 bottom-0 z-30 grid grid-cols-6 border-t border-sidebar-border bg-sidebar text-sidebar-foreground lg:hidden">
         {nav.map(({ to, label, icon: Icon }) => (
           <Link key={to} to={to} activeOptions={{ exact: to === "/" }}
-            className="flex flex-col items-center gap-1 py-3 text-xs opacity-70"
+            aria-label={label}
+            className="flex min-w-0 flex-col items-center gap-1 py-3 text-[10px] opacity-70 sm:text-xs"
             activeProps={{ className: "!opacity-100 text-sidebar-primary" }}>
-            <Icon className="h-6 w-6" />{label}
+            <Icon className="h-6 w-6 shrink-0" /><span className="max-w-full truncate">{to === "/configuracoes" ? "Ajustes" : label}</span>
           </Link>
         ))}
       </nav>
