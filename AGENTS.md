@@ -13,3 +13,4 @@
 - Persist user plots in Cloud with owner-only writes and explicit read-only grants; UI controls are not the authorization boundary.
 - Keep producer profiles owner-only, separate from plot sharing; granting land visibility must not grant personal profile access.
 - Store validated presentation preferences locally under an account-scoped key; settings checks must remain read-only and explicitly distinguish checks from a full security audit.
+- Reuse one validated producer profile form for signup and account editing; authenticated server functions derive the owner from verified context, while database validation also guards direct writes.

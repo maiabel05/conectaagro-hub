@@ -1,5 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAuth } from "@/lib/use-auth";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
@@ -7,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Panel } from "@/components/AppShell";
 
 export const Route = createFileRoute("/auth")({
+  validateSearch: (search: Record<string, unknown>): { next?: "conta" } => search["next"] === "conta" ? { next: "conta" } : {},
   head: () => ({
     meta: [
       { title: "Entrar — ConectaAgro" },
@@ -20,7 +22,7 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
-export const field = "w-full rounded-lg border bg-background px-3 py-2 text-sm";
+export const field = "mt-1 min-h-11 w-full rounded-lg border bg-background px-3 py-2 text-base";
 
 export async function googleSignIn() {
   const r = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
@@ -29,6 +31,9 @@ export async function googleSignIn() {
 
 function AuthPage() {
   const nav = useNavigate();
+  const { next } = Route.useSearch();
+  const { user } = useAuth();
+  useEffect(() => { if (user) void nav({ to: next === "conta" ? "/conta" : "/talhoes" }); }, [user, next, nav]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
@@ -39,7 +44,7 @@ function AuthPage() {
     const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     setBusy(false);
     if (error) { toast.error("E-mail ou senha incorretos, ou e-mail ainda não confirmado."); return; }
-    nav({ to: "/talhoes" });
+    nav({ to: next === "conta" ? "/conta" : "/talhoes" });
   };
 
   return (

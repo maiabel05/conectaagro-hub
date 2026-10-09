@@ -5,6 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Panel } from "@/components/AppShell";
 import { field, googleSignIn } from "./auth";
+import { ProfileFields } from "@/components/ProfileFields";
+import { emptyProfile, signupSchema } from "@/lib/profile";
 
 export const Route = createFileRoute("/cadastro")({
   head: () => ({
@@ -21,27 +23,31 @@ export const Route = createFileRoute("/cadastro")({
 });
 
 function Cadastro() {
-  const [f, setF] = useState({ full_name: "", farm_name: "", city: "", email: "", password: "", confirm: "" });
+  const [profile, setProfile] = useState(emptyProfile);
+  const [f, setF] = useState({ email: "", password: "", confirm: "" });
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState(false);
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement>) => setF({ ...f, [k]: e.target.value });
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (f.password.length < 8) { toast.error("A senha precisa ter pelo menos 8 caracteres."); return; }
-    if (f.password !== f.confirm) { toast.error("As senhas não conferem."); return; }
+    const result = signupSchema.safeParse({ ...profile, ...f });
+    if (!result.success) { toast.error(result.error.issues[0]?.message ?? "Confira os dados do cadastro."); return; }
+    const { email, password, confirm: _confirm, ...metadata } = result.data;
     setBusy(true);
+    try {
     const { error } = await supabase.auth.signUp({
-      email: f.email.trim(),
-      password: f.password,
+      email,
+      password,
       options: {
         emailRedirectTo: window.location.origin,
-        data: { full_name: f.full_name.trim().slice(0, 120), farm_name: f.farm_name.trim().slice(0, 120), city: f.city.trim().slice(0, 120) },
+        data: metadata,
       },
     });
-    setBusy(false);
     if (error) { toast.error(/pwned|leaked|weak/i.test(error.message) ? "Essa senha é fraca ou já vazou na internet. Escolha outra." : "Não foi possível criar a conta. Verifique os dados."); return; }
     setSent(true);
+    } catch { toast.error("Não foi possível criar a conta. Tente novamente."); }
+    finally { setBusy(false); }
   };
 
   if (sent) return (
@@ -52,15 +58,15 @@ function Cadastro() {
   );
 
   return (
-    <div className="mx-auto max-w-md">
+    <div className="mx-auto max-w-2xl">
       <Panel title="Criar conta de produtor">
         <form onSubmit={submit} className="space-y-3">
-          <label className="block text-sm">Nome completo<input required maxLength={120} autoComplete="name" className={field} value={f.full_name} onChange={set("full_name")} /></label>
-          <label className="block text-sm">Nome da fazenda<input required maxLength={120} className={field} value={f.farm_name} onChange={set("farm_name")} /></label>
-          <label className="block text-sm">Cidade / UF<input maxLength={120} className={field} value={f.city} onChange={set("city")} placeholder="Sorriso / MT" /></label>
-          <label className="block text-sm">E-mail<input type="email" required autoComplete="email" className={field} value={f.email} onChange={set("email")} /></label>
-          <label className="block text-sm">Senha (mín. 8 caracteres)<input type="password" required minLength={8} autoComplete="new-password" className={field} value={f.password} onChange={set("password")} /></label>
-          <label className="block text-sm">Confirmar senha<input type="password" required autoComplete="new-password" className={field} value={f.confirm} onChange={set("confirm")} /></label>
+          <ProfileFields value={profile} onChange={setProfile} disabled={busy} />
+          <h3 className="border-t pt-4 font-semibold">Acesso à conta</h3>
+          <label className="block text-sm">E-mail<input type="email" required maxLength={255} autoComplete="email" className={field} value={f.email} onChange={set("email")} /></label>
+          <label className="block text-sm">Senha (mín. 8 caracteres)<input type="password" required minLength={8} maxLength={128} autoComplete="new-password" className={field} value={f.password} onChange={set("password")} /></label>
+          <label className="block text-sm">Confirmar senha<input type="password" required maxLength={128} autoComplete="new-password" className={field} value={f.confirm} onChange={set("confirm")} /></label>
+          <p className="text-xs text-muted-foreground">Seus dados pessoais ficam privados. Compartilhar talhões não compartilha seu cadastro.</p>
           <Button type="submit" disabled={busy} className="w-full">{busy ? "Criando conta…" : "Criar conta"}</Button>
         </form>
         <Button variant="outline" onClick={googleSignIn} className="mt-3 w-full">Cadastrar com Google</Button>
