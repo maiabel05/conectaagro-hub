@@ -119,6 +119,21 @@ export type Database = {
         }
         Relationships: []
       }
+      share_attempts: {
+        Row: {
+          attempted_at: string
+          owner_id: string
+        }
+        Insert: {
+          attempted_at?: string
+          owner_id: string
+        }
+        Update: {
+          attempted_at?: string
+          owner_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
