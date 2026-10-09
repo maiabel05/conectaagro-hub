@@ -1,4 +1,8 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/lib/use-auth";
+import { Button } from "@/components/ui/button";
 import { BookOpen, CalendarDays, LayoutDashboard, Leaf, MapPin, Moon, Microscope, Sun } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 
@@ -28,6 +32,16 @@ function ThemeToggle() {
 }
 
 export function AppShell({ children }: { children: ReactNode }) {
+  const { user, ready } = useAuth();
+  const qc = useQueryClient();
+  const navigate = useNavigate();
+  const signOut = async () => {
+    await qc.cancelQueries();
+    qc.clear();
+    const { error } = await supabase.auth.signOut();
+    if (!error) await navigate({ to: "/auth", replace: true });
+  };
+  const account = ready && (user ? <Button variant="ghost" onClick={signOut}>Sair</Button> : <Button variant="ghost" asChild><Link to="/auth">Entrar / Criar conta</Link></Button>);
   return (
     <div className="min-h-screen lg:flex">
       <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col bg-sidebar p-5 text-sidebar-foreground lg:flex">
@@ -44,6 +58,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             </Link>
           ))}
         </nav>
+        <div className="mt-4 border-t border-sidebar-border pt-3">{account}</div>
         <div className="mt-auto flex items-center justify-between">
           <span className="flex items-center gap-2 text-xs opacity-80"><span className="live-dot h-2 w-2 rounded-full bg-sidebar-primary" />12 sensores online</span>
           <ThemeToggle />
@@ -52,7 +67,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <header className="sticky top-0 z-30 flex items-center justify-between bg-sidebar px-4 py-3 text-sidebar-foreground lg:hidden">
         <div className="flex items-center gap-2"><Leaf className="h-5 w-5 text-sidebar-primary" /><span className="font-display font-semibold">ConectaAgro</span></div>
-        <ThemeToggle />
+        <div className="flex items-center gap-1">{account}<ThemeToggle /></div>
       </header>
 
       <main className="flex-1 px-4 pb-28 pt-5 sm:px-6 lg:px-10 lg:pb-10 lg:pt-8">{children}</main>

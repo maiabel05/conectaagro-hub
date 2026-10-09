@@ -37,7 +37,7 @@ function AuthPage() {
     setBusy(true);
     const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     setBusy(false);
-    if (error) return toast.error("E-mail ou senha incorretos, ou e-mail ainda não confirmado.");
+    if (error) { toast.error("E-mail ou senha incorretos, ou e-mail ainda não confirmado."); return; }
     nav({ to: "/talhoes" });
   };
 

@@ -27,8 +27,8 @@ function Cadastro() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (f.password.length < 8) return toast.error("A senha precisa ter pelo menos 8 caracteres.");
-    if (f.password !== f.confirm) return toast.error("As senhas não conferem.");
+    if (f.password.length < 8) { toast.error("A senha precisa ter pelo menos 8 caracteres."); return; }
+    if (f.password !== f.confirm) { toast.error("As senhas não conferem."); return; }
     setBusy(true);
     const { error } = await supabase.auth.signUp({
       email: f.email.trim(),
@@ -39,7 +39,7 @@ function Cadastro() {
       },
     });
     setBusy(false);
-    if (error) return toast.error(/pwned|leaked|weak/i.test(error.message) ? "Essa senha é fraca ou já vazou na internet. Escolha outra." : "Não foi possível criar a conta. Verifique os dados.");
+    if (error) { toast.error(/pwned|leaked|weak/i.test(error.message) ? "Essa senha é fraca ou já vazou na internet. Escolha outra." : "Não foi possível criar a conta. Verifique os dados."); return; }
     setSent(true);
   };
 

@@ -32,8 +32,10 @@ export function usePlotsQuery() {
   const { user, ready } = useAuth();
   const q = useQuery({
     queryKey: plotsKey(user?.id),
-    queryFn: () => fetchPlots(user!.id),
+    queryFn: () => user ? fetchPlots(user.id) : Promise.resolve([]),
     enabled: !!user,
+    staleTime: 0,
+    refetchInterval: 15000,
   });
   return { ...q, user, ready, plots: user ? q.data ?? [] : demo };
 }
