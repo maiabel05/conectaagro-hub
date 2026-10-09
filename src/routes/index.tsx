@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AlertTriangle, CloudRain, CloudSun, Cloud, Droplets, Gauge, Sprout, Sun, Thermometer, Timer, Waves } from "lucide-react";
+import { AlertTriangle, CloudRain, CloudSun, Cloud, Droplets, Gauge, Sprout, Star, Sun, Thermometer, Timer, Waves } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Area, AreaChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { PageHeader, Panel } from "@/components/AppShell";
 import { waterBalance } from "@/lib/agro";
 import { alerts, forecast, hourly, type Health } from "@/lib/mock-data";
 import { usePlots } from "@/lib/plots-store";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -48,6 +49,9 @@ function Dashboard() {
   const m = useLive();
   const [plotId, setPlotId] = useState("T1");
   const plots = usePlots();
+  const [plotTab, setPlotTab] = useState<"all" | "favorites">("all");
+  const [favorites, setFavorites] = useState<string[]>([]);
+  const visiblePlots = plotTab === "favorites" ? plots.filter((p) => favorites.includes(p.uuid ?? p.id)) : plots;
   const plot = plots.find((p) => p.id === plotId) ?? plots[0]!;
   const wb = waterBalance({ et0: forecast[0]!.et0, kc: plot.kc, rainForecast: forecast[0]!.rain, soilMoisture: plot.moisture });
   const fillPct = Math.min(100, (wb.litersPerM2 / 8) * 100);
@@ -144,10 +148,22 @@ function Dashboard() {
 
       <div className="mt-5 grid gap-5 xl:grid-cols-3">
         <Panel title="Talhões" icon={<Sprout className="h-5 w-5 text-primary" />} className="xl:col-span-2">
-          <div className="grid gap-3 sm:grid-cols-2">
-            {plots.map((p) => (
-              <button key={p.id} onClick={() => setPlotId(p.id)}
-                className={`rounded-xl border p-4 text-left transition hover:border-primary ${plotId === p.id ? "border-primary ring-2 ring-primary/20" : ""}`}>
+          <div role="tablist" aria-label="Visualização dos talhões" className="mb-4 grid grid-cols-2 gap-2 sm:flex">
+            <Button role="tab" id="plots-all-tab" aria-selected={plotTab === "all"} aria-controls="plots-tab-panel" variant={plotTab === "all" ? "default" : "outline"} onClick={() => setPlotTab("all")}>Todos os talhões</Button>
+            <Button role="tab" id="plots-favorites-tab" aria-selected={plotTab === "favorites"} aria-controls="plots-tab-panel" variant={plotTab === "favorites" ? "default" : "outline"} onClick={() => setPlotTab("favorites")}><Star className="h-4 w-4" />Favoritos ({plots.filter((p) => favorites.includes(p.uuid ?? p.id)).length})</Button>
+          </div>
+          <div role="tabpanel" id="plots-tab-panel" aria-labelledby={plotTab === "all" ? "plots-all-tab" : "plots-favorites-tab"} className="grid gap-3 sm:grid-cols-2">
+            {visiblePlots.length === 0 && <div className="py-8 text-center sm:col-span-2"><Star className="mx-auto mb-3 h-8 w-8 text-muted-foreground" /><p className="font-medium">Nenhum talhão favorito</p><Button variant="outline" className="mt-4" onClick={() => setPlotTab("all")}>Ver todos os talhões</Button></div>}
+            {visiblePlots.map((p) => (
+              <div key={p.uuid ?? p.id}
+                className={`min-w-0 rounded-xl border p-4 text-left transition hover:border-primary ${plotId === p.id ? "border-primary ring-2 ring-primary/20" : ""}`}>
+                <div className="mb-3 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
+                  <Button variant="ghost" className="h-auto min-w-0 justify-start whitespace-normal px-0 text-left" onClick={() => setPlotId(p.id)} aria-pressed={plotId === p.id}>Selecionar {p.id}</Button>
+                  <Button variant="ghost" size="icon" aria-label={`${favorites.includes(p.uuid ?? p.id) ? "Remover dos" : "Adicionar aos"} favoritos: ${p.name}`} aria-pressed={favorites.includes(p.uuid ?? p.id)} onClick={() => {
+                    const key = p.uuid ?? p.id;
+                    setFavorites((current) => current.includes(key) ? current.filter((id) => id !== key) : [...current, key]);
+                  }}><Star className={`h-5 w-5 ${favorites.includes(p.uuid ?? p.id) ? "fill-current text-warning" : "text-muted-foreground"}`} /></Button>
+                </div>
                 <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-2">
                   <div className="min-w-0"><p className="font-semibold">{p.name}</p><p className="text-xs text-muted-foreground">{p.area} ha · {p.stage}</p></div>
                   <span className={`rounded-full px-2.5 py-1 text-xs font-medium capitalize ${healthStyle[p.health]}`}>{p.health}</span>
@@ -160,7 +176,7 @@ function Dashboard() {
                     <div className="mt-1 h-2 rounded-full bg-muted"><div className="h-2 rounded-full bg-water" style={{ width: `${(p.moisture / 40) * 100}%` }} /></div>
                     <p className="mt-1 font-medium">{p.moisture}%</p></div>
                 </div>
-              </button>
+              </div>
             ))}
           </div>
         </Panel>
