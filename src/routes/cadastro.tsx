@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
 import { Panel } from "@/components/AppShell";
 import { field, googleSignIn } from "./auth";
 
@@ -60,9 +61,9 @@ function Cadastro() {
           <label className="block text-sm">E-mail<input type="email" required autoComplete="email" className={field} value={f.email} onChange={set("email")} /></label>
           <label className="block text-sm">Senha (mín. 8 caracteres)<input type="password" required minLength={8} autoComplete="new-password" className={field} value={f.password} onChange={set("password")} /></label>
           <label className="block text-sm">Confirmar senha<input type="password" required autoComplete="new-password" className={field} value={f.confirm} onChange={set("confirm")} /></label>
-          <button disabled={busy} className="w-full rounded-lg bg-primary py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-50">Criar conta</button>
+          <Button type="submit" disabled={busy} className="w-full">Criar conta</Button>
         </form>
-        <button onClick={googleSignIn} className="mt-3 w-full rounded-lg border py-2.5 text-sm font-medium">Cadastrar com Google</button>
+        <Button variant="outline" onClick={googleSignIn} className="mt-3 w-full">Cadastrar com Google</Button>
         <p className="mt-4 text-center text-sm text-muted-foreground">Já tem conta? <Link to="/auth" className="font-medium text-primary">Entrar</Link></p>
       </Panel>
     </div>
