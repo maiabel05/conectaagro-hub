@@ -12,6 +12,7 @@ describe("App routing", () => {
     expect(router.matchRoutes("/cadastro").at(-1)?.routeId).toBe("/cadastro");
     expect(router.matchRoutes("/auth").at(-1)?.routeId).toBe("/auth");
     expect(router.matchRoutes("/talhoes").map((m) => m.routeId)).toContain("/_authenticated");
+    expect(router.matchRoutes("/conta").map((m) => m.routeId)).toContain("/_authenticated");
   });
   it("matches a page for / instead of falling back to not found", () => {
     const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
