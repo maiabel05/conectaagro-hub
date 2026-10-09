@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as CadernoRouteImport } from './routes/caderno'
 import { Route as DiagnosticoRouteImport } from './routes/diagnostico'
 import { Route as HistoricoRouteImport } from './routes/historico'
@@ -18,6 +19,10 @@ import { Route as AuthenticatedTalhoesRouteImport } from './routes/_authenticate
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CadernoRoute = CadernoRouteImport.update({
@@ -36,9 +41,9 @@ const HistoricoRoute = HistoricoRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedTalhoesRoute = AuthenticatedTalhoesRouteImport.update({
-  id: '/_authenticated/talhoes',
+  id: '/talhoes',
   path: '/talhoes',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -58,6 +63,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/caderno': typeof CadernoRoute
   '/diagnostico': typeof DiagnosticoRoute
   '/historico': typeof HistoricoRoute
@@ -71,6 +77,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/caderno'
     | '/diagnostico'
     | '/historico'
@@ -79,10 +86,10 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   CadernoRoute: typeof CadernoRoute
   DiagnosticoRoute: typeof DiagnosticoRoute
   HistoricoRoute: typeof HistoricoRoute
-  AuthenticatedTalhoesRoute: typeof AuthenticatedTalhoesRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -92,6 +99,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/caderno': {
@@ -120,17 +134,28 @@ declare module '@tanstack/react-router' {
       path: '/talhoes'
       fullPath: '/talhoes'
       preLoaderRoute: typeof AuthenticatedTalhoesRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedTalhoesRoute: typeof AuthenticatedTalhoesRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedTalhoesRoute: AuthenticatedTalhoesRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   CadernoRoute: CadernoRoute,
   DiagnosticoRoute: DiagnosticoRoute,
   HistoricoRoute: HistoricoRoute,
-  AuthenticatedTalhoesRoute: AuthenticatedTalhoesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
